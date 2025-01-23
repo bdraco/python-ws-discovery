@@ -35,7 +35,12 @@ def parseSOAPMessage(data, ipAddr):
         #print('Fault received from %s %s:' % (ipAddr, data), file=sys.stderr)
         return None
 
-    soapAction = dom.getElementsByTagNameNS(NS_ADDRESSING, "Action")[0].firstChild.data.strip()
+    actions = dom.getElementsByTagNameNS(NS_ADDRESSING, "Action")
+    if len(actions) == 0:
+        #print('No action received from %s %s' % (ipAddr, data), file=sys.stderr)
+        return None
+
+    soapAction = actions[0].firstChild.data.strip()
     if soapAction == NS_ACTION_PROBE:
         return parseProbeMessage(dom)
     elif soapAction == NS_ACTION_PROBE_MATCH:
