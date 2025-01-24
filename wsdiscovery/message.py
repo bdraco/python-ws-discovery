@@ -31,16 +31,16 @@ def parseSOAPMessage(data, ipAddr):
     try:
         dom = minidom.parseString(data)
     except Exception as ex:
-        logger.debug('Failed to parse message from %s\n"%s": %s', ipAddr, data, ex)
+        logger.debug('Failed to parse message from %s\n%s: %s', ipAddr, data, ex)
         return None
 
     if dom.getElementsByTagNameNS(NS_SOAPENV, "Fault"):
-        logger.debug('Fault received from %s: "%s"', ipAddr, data)
+        logger.debug('Fault received from %s: %s', ipAddr, data)
         return None
 
     actions = dom.getElementsByTagNameNS(NS_ADDRESSING, "Action")
     if len(actions) == 0:
-        logger.warning('No action received from %s: "%s"', ipAddr, data)
+        logger.warning('No action received from %s: %s', ipAddr, data)
         return None
 
     soapAction = actions[0].firstChild.data.strip()
